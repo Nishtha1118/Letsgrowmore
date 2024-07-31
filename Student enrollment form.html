@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Enrollment Form</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #edb183;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+
+    .form-container {
+      width: 300px;
+    }
+
+    .form-container label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-container input[type="text"],
+    .form-container input[type="email"],
+    .form-container input[type="url"],
+    .form-container input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #000000;
+      border-radius: 10px;
+    }
+ 
+    span{
+      margin-right: 5px;}
+    input[type="radio"]
+    input[type="checkbox"]
+    {
+      margin: 0 10px;
+      margin-right: 5px;
+    }  
+
+    .form-container button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 250px;
+      background-color: #018715;
+      color: white;
+      cursor: pointer;
+    }
+
+    .form-container button:hover {
+      background-color: #48854b;
+    }
+
+    .enrolled-students {
+      width: 400px;
+      border-collapse: collapse;
+    }
+
+    .enrolled-students th,
+    .enrolled-students td {
+      border: 1px solid #000000;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>Student Enrollment Form</h1> 
+  <div class="container">
+    <div class="form-container">
+      <form id="enrollment-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="website">Website:</label>
+        <input type="url" id="website" name="website">
+
+        <label for="image">Image Link: (100px x 120px)</label>
+        <input type="file" id="image" name="image" accept="image/*">
+        <br>
+        <br>
+
+        <label for="gender">Gender:</label>
+         <input type="radio" id="Male" name="gender" value="Male">
+         <span>Male</span>    
+        <input type="radio" id="Female" name="gender" value="Female">
+         <span>Female</span>
+        <br>
+        <br>
+        <label for="skills">Skills:</label>
+        <input type="checkbox" id="HTML" name="skills" value="HTML">
+        <span>HTML</span>
+        <input type="checkbox" id="CSS" name="skills" value="CSS">
+        <span>CSS</span>
+        <input type="checkbox" id="JavaScript" name="skills" value="JavaScript">
+        <span>JavaScript</span>
+        <br>
+        <br>
+
+        <button type="submit">Enroll Student</button>
+        <button type="reset">Clear</button>
+      </form>
+    </div>
+    <div class="enrolled-students">
+      <h2>Enrolled Students</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const enrollmentForm = document.getElementById('enrollment-form');
+    const enrolledStudentsTable = document.querySelector('.enrolled-students tbody');
+
+    enrollmentForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const website = document.getElementById('website').value;
+      const image = document.getElementById('image').files[0];
+      const gender = document.querySelector('input[name="gender"]:checked').value;
+      const skills = Array.from(document.querySelectorAll('input[name="skills"]:checked'))
+        .map(checkbox => checkbox.value)
+        .join(', ');
+
+      // Create a new row for the enrolled student
+      const newRow = document.createElement('tr');
+
+      // Add the description to the row
+      const descriptionCell = document.createElement('td');
+      descriptionCell.innerHTML = `
+        <h3>${name}</h3>
+        <p>Gender: ${gender}</p>
+        <p>Email: ${email}</p>
+        <p>Website: ${website}</p>
+        <p>Skills: ${skills}</p>
+      `;
+      newRow.appendChild(descriptionCell);
+
+      // Add the image to the row
+      const imageCell = document.createElement('td');
+      const imageElement = document.createElement('img');
+      imageElement.src = URL.createObjectURL(image);
+      imageElement.alt = `${name}'s profile picture`;
+      imageCell.appendChild(imageElement);
+      newRow.appendChild(imageCell);
+
+      // Add the new row to the table
+      enrolledStudentsTable.appendChild(newRow);
+
+      // Clear the form
+      enrollmentForm.reset();
+    });
+  </script>
+</body>
+</html>
